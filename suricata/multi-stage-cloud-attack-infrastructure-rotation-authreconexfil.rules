@@ -1,0 +1,7 @@
+alert tls $HOME_NET any -> $EXTERNAL_NET any (msg:"Storm-3121/Storm-3032 stage 1 - Microsoft authentication flow observed"; flow:to_server,established; tls.sni; content:"login.microsoftonline.com"; metadata:author Ibrahim_Saud, attack_id T1090, attack_id T1665; sid:1000101; rev:1;)
+
+alert tls $HOME_NET any -> $EXTERNAL_NET any (msg:"Storm-3121/Storm-3032 stage 2 - Graph API reconnaissance from previously authenticated host"; flow:to_server,established; tls.sni; content:"graph.microsoft.com"; metadata:author Ibrahim_Saud, attack_id T1090, attack_id T1665; sid:1000102; rev:1;)
+
+alert tls $HOME_NET any -> $EXTERNAL_NET any (msg:"Storm-3121/Storm-3032 stage 3 - Cloud data exfiltration endpoint contacted after distinct auth and recon infrastructure stages"; flow:to_server,established; tls.sni; pcre:"/(sharepoint\.com|onedrive\.live\.com|outlook\.office365\.com)/"; metadata:author Ibrahim_Saud, attack_id T1090, attack_id T1665; classtype:command-and-control; sid:1000103; rev:1;)
+
+# Note: this validator's Suricata grammar does not support xbits/hostbits cross-flow state tracking, so the three stages below alert independently per SNI match rather than chaining on a shared attacker IP. Correlate sid 1000101 -> 1000102 -> 1000103 for the same source IP within ~1 hour in the SIEM to reconstruct the full auth->recon->exfil chain.
