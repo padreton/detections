@@ -1,0 +1,1 @@
+alert dns $HOME_NET any -> any any (msg:"DNS query to known passkey/SSO phishing lure domain"; dns.query; content:"passkeyhelpdesk"; nocase; pcre:"/passkeyhelpdesk\.[a-z]{2,}$/i"; classtype:attempted-recon; metadata: attack_id T1583.001, attack_id T1598.003, attack_id T1591, attack_id T1566.003; sid:1000201; rev:1;)
