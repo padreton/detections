@@ -1,0 +1,1 @@
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"NDR - Outbound HTTP Request to Compromised Admin Menu Editor Pro Distribution Domain"; flow:to_server,established; http.host; content:"adminmenueditor.com"; nocase; fast_pattern; classtype:trojan-activity; metadata: attack_id T1071.001, attack_id T1195.002, tactic Command_and_Control, tactic Initial_Access; sid:1000101; rev:1;)
