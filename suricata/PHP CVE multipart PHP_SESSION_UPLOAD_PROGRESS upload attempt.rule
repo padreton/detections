@@ -1,1 +1,0 @@
-alert http any any -> $HOME_NET any (msg:"PHP CVE-2026-109618/9 multipart PHP_SESSION_UPLOAD_PROGRESS request"; flow:established,to_server; http.content_type; content:"multipart/form-data"; nocase; http.request_body; content:"PHP_SESSION_UPLOAD_PROGRESS"; fast_pattern; detection_filter:track by_src, count 3, seconds 120; classtype:web-application-attack; sid:2026106181; rev:2;)
